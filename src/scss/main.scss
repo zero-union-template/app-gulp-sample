@@ -1,7 +1,6 @@
 @import './block/header';
+@import './block/footer';
 
 body {
   background-color: $color;
-  transition: all 0.2s ease-in;
-  display: flex;
 }
