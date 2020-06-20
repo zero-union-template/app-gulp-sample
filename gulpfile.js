@@ -3,7 +3,10 @@ const browserSync = require('browser-sync').create();
 const watch = require('gulp-watch');
 
 gulp.task('watch', function () {
-  watch(['./src/*.html', './src/**/*.css'], gulp.parallel(browserSync.reload));
+  watch(
+    ['./src/*.html', './src/css/**/*.css'],
+    gulp.parallel(browserSync.reload),
+  );
 });
 
 gulp.task('server', function () {
@@ -14,6 +17,4 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('default', function () {
-  gulp.parallel('server', 'watch');
-});
+gulp.task('default', gulp.parallel('server', 'watch'));
