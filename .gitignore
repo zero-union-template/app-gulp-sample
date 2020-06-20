@@ -105,3 +105,4 @@ dist
 
 #Editor Settings
 .vscode
+.cz-config.js
