@@ -13,7 +13,7 @@ gulp.task('sass', function (done) {
     .pipe(
       autoprefixer({
         overrideBrowserslist: 'last 4 version',
-      }),
+      })
     )
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('./src/css/'));
@@ -23,8 +23,9 @@ gulp.task('sass', function (done) {
 gulp.task('watch', function () {
   watch(
     ['./src/*.html', './src/css/**/*.css'],
-    gulp.parallel(browserSync.reload),
+    gulp.parallel(browserSync.reload)
   );
+  watch(['./src/scss/**/*scss'], gulp.parallel('sass'));
 });
 
 gulp.task('server', function () {
