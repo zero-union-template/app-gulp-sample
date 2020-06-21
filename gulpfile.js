@@ -68,3 +68,8 @@ gulp.task('server', function () {
 });
 
 gulp.task('default', gulp.parallel('server', 'watch', 'sass', 'html'));
+
+gulp.task('build', function (done) {
+  console.log('Build OK!!!');
+  done();
+});
