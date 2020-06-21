@@ -9,15 +9,36 @@ const notify = require('gulp-notify');
 const fileinclude = require('gulp-file-include');
 const clean = require('gulp-clean-dir');
 const image = require('gulp-image');
+const concat = require('gulp-concat');
 
 gulp.task('clean', function (done) {
-  clean('./src/public/');
   clean('./dist');
   done();
 });
 
 gulp.task('image', function (done) {
-  gulp.src('./src/img/*').pipe(image()).pipe(gulp.dest('./src/public/img/'));
+  gulp.src('./src/img/*').pipe(image()).pipe(gulp.dest('./dist/img/'));
+  done();
+});
+
+gulp.task('script', function (done) {
+  gulp
+    .src('src/js/*.js')
+    .pipe(
+      plumber({
+        errorHandler: notify.onError(function (err) {
+          return {
+            title: 'JavaScript',
+            sound: false,
+            message: err.message,
+          };
+        }),
+      })
+    )
+    .pipe(sourcemaps.init())
+    .pipe(concat('main.js'))
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('./dist/'));
   done();
 });
 
@@ -36,7 +57,7 @@ gulp.task('html', function (done) {
       })
     )
     .pipe(fileinclude({ prefix: '@@' }))
-    .pipe(gulp.dest('./src/public'));
+    .pipe(gulp.dest('./dist/'));
   done();
 });
 gulp.task('sass', function (done) {
@@ -59,24 +80,25 @@ gulp.task('sass', function (done) {
       })
     )
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./src/public/'));
+    .pipe(gulp.dest('./dist/'));
   done();
 });
 
 gulp.task('watch', function () {
   watch(
-    ['./src/public/*.html', './src/public/**/*.css', '/src/public/img/**/*.*'],
+    ['./dist/*.html', './dist/**/*.css', '/dist/img/**/*.*', './dist/**/*.js'],
     gulp.parallel(browserSync.reload)
   );
   watch(['./src/scss/**/*.scss'], gulp.parallel('sass'));
   watch(['./src/html/**/*.html'], gulp.parallel('html'));
   watch(['./src/img/**/*.*'], gulp.parallel('image'));
+  watch(['./src/js/**/*.js'], gulp.parallel('script'));
 });
 
 gulp.task('server', function () {
   browserSync.init({
     server: {
-      baseDir: './src/public/',
+      baseDir: './dist/',
     },
   });
 });
@@ -85,12 +107,7 @@ gulp.task(
   'default',
   gulp.series(
     'clean',
-    gulp.parallel('sass', 'html', 'image'),
+    gulp.parallel('sass', 'html', 'image', 'script'),
     gulp.parallel('server', 'watch')
   )
 );
-
-gulp.task('build', function (done) {
-  console.log('Build OK!!!');
-  done();
-});
