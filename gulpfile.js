@@ -8,6 +8,24 @@ const plumber = require('gulp-plumber');
 const notify = require('gulp-notify');
 const fileInclude = require('gulp-file-include');
 
+gulp.task('html', function (done) {
+  return gulp
+    .src('src/html/*.html')
+    .pipe(
+      plumber({
+        errorHandler: notify.onError(function (err) {
+          return {
+            title: 'HTML include',
+            sound: false,
+            message: err.message,
+          };
+        }),
+      })
+    )
+    .pipe(fileinclude({ prefix: '@@' }))
+    .pipe(gulp.dest('./src/'));
+  done();
+});
 gulp.task('sass', function (done) {
   gulp
     .src('./src/scss/index.scss')
