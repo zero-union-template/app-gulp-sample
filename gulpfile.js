@@ -23,7 +23,7 @@ gulp.task('html', function (done) {
       })
     )
     .pipe(fileinclude({ prefix: '@@' }))
-    .pipe(gulp.dest('./src/'));
+    .pipe(gulp.dest('./src/public'));
   done();
 });
 gulp.task('sass', function (done) {
@@ -46,13 +46,13 @@ gulp.task('sass', function (done) {
       })
     )
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('./src/css/'));
+    .pipe(gulp.dest('./src/public/'));
   done();
 });
 
 gulp.task('watch', function () {
   watch(
-    ['./src/*.html', './src/css/**/*.css'],
+    ['./src/public/*.html', './src/public/**/*.css'],
     gulp.parallel(browserSync.reload)
   );
   watch(['./src/scss/**/*.scss'], gulp.parallel('sass'));
@@ -62,7 +62,7 @@ gulp.task('watch', function () {
 gulp.task('server', function () {
   browserSync.init({
     server: {
-      baseDir: './src/',
+      baseDir: './src/public/',
     },
   });
 });
