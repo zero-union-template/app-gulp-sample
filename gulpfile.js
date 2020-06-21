@@ -6,7 +6,7 @@ const autoprefixer = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 const notify = require('gulp-notify');
-const fileInclude = require('gulp-file-include');
+const fileinclude = require('gulp-file-include');
 
 gulp.task('html', function (done) {
   return gulp
@@ -28,7 +28,7 @@ gulp.task('html', function (done) {
 });
 gulp.task('sass', function (done) {
   gulp
-    .src('./src/scss/index.scss')
+    .src('./src/scss/main.scss')
     .pipe(
       plumber({
         errorHandler: notify.onError((err) => ({
@@ -56,6 +56,7 @@ gulp.task('watch', function () {
     gulp.parallel(browserSync.reload)
   );
   watch(['./src/scss/**/*.scss'], gulp.parallel('sass'));
+  watch(['./src/html/**/*.html'], gulp.parallel('html'));
 });
 
 gulp.task('server', function () {
@@ -66,4 +67,4 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('default', gulp.parallel('server', 'watch', 'sass'));
+gulp.task('default', gulp.parallel('server', 'watch', 'sass', 'html'));
