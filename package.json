@@ -1,10 +1,12 @@
 {
-  "name": "app-gulp-example",
+  "name": "app-gulp-sample",
   "version": "1.0.0",
-  "repository": "https://github.com/basthub/app-gulp-example.git",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/basthub/app-gulp-sample.git"
+  },
   "author": "Serge Bast <serge.bast@aol.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "start": "gulp",
     "build": "gulp build"
