@@ -7,9 +7,22 @@ const sourcemaps = require('gulp-sourcemaps');
 const plumber = require('gulp-plumber');
 const notify = require('gulp-notify');
 const fileinclude = require('gulp-file-include');
+const clean = require('gulp-clean-dir');
+const image = require('gulp-image');
+
+gulp.task('clean', function (done) {
+  clean('./src/public/');
+  clean('./dist');
+  done();
+});
+
+gulp.task('image', function (done) {
+  gulp.src('./src/img/*').pipe(image()).pipe(gulp.dest('./src/public/img/'));
+  done();
+});
 
 gulp.task('html', function (done) {
-  return gulp
+  gulp
     .src('src/html/*.html')
     .pipe(
       plumber({
@@ -52,11 +65,12 @@ gulp.task('sass', function (done) {
 
 gulp.task('watch', function () {
   watch(
-    ['./src/public/*.html', './src/public/**/*.css'],
+    ['./src/public/*.html', './src/public/**/*.css', '/src/public/img/**/*.*'],
     gulp.parallel(browserSync.reload)
   );
   watch(['./src/scss/**/*.scss'], gulp.parallel('sass'));
   watch(['./src/html/**/*.html'], gulp.parallel('html'));
+  watch(['./src/img/**/*.*'], gulp.parallel('image'));
 });
 
 gulp.task('server', function () {
@@ -67,7 +81,14 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('default', gulp.parallel('server', 'watch', 'sass', 'html'));
+gulp.task(
+  'default',
+  gulp.series(
+    'clean',
+    gulp.parallel('sass', 'html', 'image'),
+    gulp.parallel('server', 'watch')
+  )
+);
 
 gulp.task('build', function (done) {
   console.log('Build OK!!!');
