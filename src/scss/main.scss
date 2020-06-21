@@ -4,5 +4,10 @@
 @import './block/footer';
 
 body {
-  background-color: $color;
+  background-image: url('img/Az3u_VnHm8Y.jpg');
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: top;
+  background-size: cover;
+  height: 100%;
 }
