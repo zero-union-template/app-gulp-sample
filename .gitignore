@@ -40,6 +40,8 @@ build/Release
 # Dependency directories
 node_modules/
 jspm_packages/
+css/
+public/
 
 # TypeScript v1 declaration files
 typings/
@@ -106,5 +108,3 @@ dist
 #Editor Settings
 .vscode
 .cz-config.js
-src/css/
-src/css/main.css
