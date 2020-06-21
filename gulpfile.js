@@ -11,6 +11,15 @@ const fileInclude = require('gulp-file-include');
 gulp.task('sass', function (done) {
   gulp
     .src('./src/scss/index.scss')
+    .pipe(
+      plumber({
+        errorHandler: notify.onError((err) => ({
+          title: 'SCSS',
+          sound: false,
+          message: err.message,
+        })),
+      })
+    )
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(
@@ -39,4 +48,4 @@ gulp.task('server', function () {
   });
 });
 
-gulp.task('default', gulp.parallel('server', 'watch'));
+gulp.task('default', gulp.parallel('server', 'watch', 'sass'));
